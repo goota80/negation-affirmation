@@ -1,0 +1,26 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+collections:
+  - name: "articles"
+    label: "Articles"
+    folder: "_articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - label: "Tags"
+        name: "tags"
+        widget: "select"
+        multiple: true
+        options:
+          - { label: "Accountability", value: "accountability" }
+          - { label: "Line Struggle", value: "line-struggle" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
