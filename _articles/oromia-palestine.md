@@ -1,10 +1,13 @@
 ---
-title: "Oromia & Palestine: United in Struggle Against Twin Zionist Entities Ethiopia & Israel"
-author: "Jitu"
-date: "2026-01-01"
+title: "Oromia & Palestine: United in Struggle Against Twin Zionist Entities
+  Ethiopia & Israel"
+author: Jitu
+date: 2026-05-26
 tags:
   - line-struggle
-excerpt: "The ideological, political, and military entwinement of Ethiopian and Israeli Zionism — and the fate of the Oromo and Palestinian peoples whose liberation struggles have always been bound together."
+excerpt: The ideological, political, and military entwinement of Ethiopian and
+  Israeli Zionism — and the fate of the Oromo and Palestinian peoples whose
+  liberation struggles have always been bound together.
 ---
 
 ## Chapter 1 — Ethiopian Zionism: Origins and its Establishment
