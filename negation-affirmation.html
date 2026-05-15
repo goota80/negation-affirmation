@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Negation Affirmation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+html{background:#0F0F0F;}
+body{background:#0F0F0F;color:#F2F0EB;font-family:'Libre Baskerville',serif;min-height:100vh;}
+.na{padding:2.5rem 2rem 5rem;max-width:1080px;margin:0 auto;}
+.na-head{margin-bottom:2.5rem;}
+.na-name{font-family:'Playfair Display',serif;font-size:46px;font-weight:700;letter-spacing:-1px;line-height:1;color:#F2F0EB;margin-bottom:0.4rem;}
+.na-name em{font-style:italic;color:#C8102E;}
+.na-tagline{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.13em;text-transform:uppercase;color:#6B6B6B;}
+.na-nav{display:flex;gap:2rem;border-top:0.5px solid #2A2A2A;border-bottom:0.5px solid #2A2A2A;padding:0.75rem 0;margin-bottom:3rem;}
+.na-nav a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B6B;text-decoration:none;cursor:pointer;transition:color 0.15s;}
+.na-nav a.active{color:#F2F0EB;border-bottom:1.5px solid #F2F0EB;padding-bottom:2px;}
+.na-nav a:hover:not(.active){color:#C8102E;}
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;margin-bottom:0.55rem;border:0.5px solid transparent;cursor:pointer;transition:opacity 0.15s;}
+.tag:hover{opacity:0.7;}
+.tag.accountability{background:rgba(200,16,46,0.12);color:#C8102E;border-color:rgba(200,16,46,0.3);}
+.tag.line-struggle{background:rgba(242,240,235,0.07);color:#9A9A9A;border-color:rgba(242,240,235,0.15);}
+.na-lead{margin-bottom:3rem;padding-bottom:3rem;border-bottom:0.5px solid #2A2A2A;cursor:pointer;}
+.na-lead-hed{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0.75rem;color:#F2F0EB;transition:color 0.15s;}
+.na-lead:hover .na-lead-hed{color:#C8102E;}
+.na-byline{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6B6B;margin-bottom:1rem;}
+.na-excerpt{font-size:15px;line-height:1.85;color:#7A7670;margin-bottom:1.25rem;}
+.na-more{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.09em;text-transform:uppercase;color:#C8102E;}
+.na-stack{display:flex;flex-direction:column;}
+.na-item{padding:1.4rem 0;border-bottom:0.5px solid #2A2A2A;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;}
+.na-item:last-child{border-bottom:none;}
+.na-item-hed{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;line-height:1.3;margin-bottom:0.3rem;color:#F2F0EB;transition:color 0.15s;}
+.na-item:hover .na-item-hed{color:#C8102E;}
+.na-item-by{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#6B6B6B;margin-top:0.2rem;}
+.na-arrow{font-size:16px;color:#2A2A2A;padding-top:4px;}
+.na-footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #2A2A2A;display:flex;justify-content:space-between;align-items:center;}
+.na-footer-name{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#F2F0EB;}
+.na-footer-links{display:flex;gap:1.5rem;align-items:center;}
+.na-footer-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#3A3A3A;text-decoration:none;cursor:pointer;transition:color 0.15s;}
+.na-footer-links a:hover{color:#C8102E;}
+.na-prose{font-size:15.5px;line-height:1.9;color:#7A7670;margin-bottom:1.5rem;}
+.na-prose strong{color:#F2F0EB;font-weight:700;}
+.na-section-hed{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#F2F0EB;margin-bottom:1.5rem;}
+.view{display:none;}
+.view.active{display:block;}
+
+/* article */
+.art-back{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.09em;text-transform:uppercase;color:#6B6B6B;cursor:pointer;margin-bottom:2rem;display:inline-flex;align-items:center;gap:0.5rem;transition:color 0.15s;background:none;border:none;}
+.art-back:hover{color:#C8102E;}
+.art-head{margin-bottom:2rem;padding-bottom:2rem;border-bottom:0.5px solid #2A2A2A;}
+.art-hed{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;line-height:1.18;color:#F2F0EB;margin-bottom:1rem;max-width:660px;}
+.art-meta{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.09em;text-transform:uppercase;color:#6B6B6B;margin-bottom:0.75rem;}
+.art-dek{font-size:15.5px;line-height:1.75;color:#7A7670;font-style:italic;max-width:600px;margin-top:0.75rem;}
+
+/* two-col layout for articles with margin notes */
+.art-wrap{display:grid;grid-template-columns:620px 1fr;gap:0 2rem;align-items:start;position:relative;}
+/* single-col layout for articles without margin notes */
+.art-wrap.no-margin{display:block;max-width:680px;}
+
+.art-main p{font-size:15px;line-height:1.9;color:#C8C4BC;margin-bottom:1.2rem;max-width:620px;}
+.art-wrap.no-margin .art-main p{max-width:100%;}
+.sec-hed{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#F2F0EB;margin:2.5rem 0 1rem;padding-top:1.75rem;border-top:0.5px solid #2A2A2A;max-width:620px;}
+.art-wrap.no-margin .sec-hed{max-width:100%;}
+.chapter-hed{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#F2F0EB;margin:3rem 0 1.25rem;padding-top:2rem;border-top:1px solid #2A2A2A;}
+.sub-hed{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#C8102E;margin:1.75rem 0 0.65rem;}
+.art-main blockquote{border-left:2px solid #2A2A2A;padding:0.2rem 0 0.2rem 1.25rem;margin:1.25rem 0;max-width:580px;}
+.art-wrap.no-margin .art-main blockquote{max-width:100%;}
+.art-main blockquote p{font-size:14px;line-height:1.85;color:#7A7670;font-style:italic;margin-bottom:0.4rem;}
+.art-main blockquote p:last-child{margin-bottom:0;}
+.bq-src{font-family:'DM Mono',monospace;font-size:10px;color:#3A3A3A;margin-top:0.5rem;font-style:normal !important;}
+.cn{font-family:'DM Mono',monospace;font-size:9px;color:#C8102E;vertical-align:super;cursor:pointer;margin-left:1px;line-height:0;transition:opacity 0.15s;}
+.cn:hover{opacity:0.6;}
+.cn.active{background:rgba(200,16,46,0.15);border-radius:2px;padding:0 2px;}
+
+/* receipts */
+.receipt{border:0.5px solid #1E1E1E;margin:1.25rem 0;max-width:600px;}
+.art-wrap.no-margin .receipt{max-width:100%;}
+.receipt-toggle{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1rem;cursor:pointer;user-select:none;background:#111;border:none;width:100%;text-align:left;}
+.receipt-toggle:hover{background:#141414;}
+.receipt-icon{font-family:'DM Mono',monospace;font-size:13px;color:#C8102E;line-height:1;transition:transform 0.2s;display:inline-block;}
+.receipt-toggle.open .receipt-icon{transform:rotate(90deg);}
+.receipt-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#4A4A4A;}
+.receipt-label strong{color:#6B6B6B;font-weight:400;}
+.receipt-body{display:none;padding:1rem;border-top:0.5px solid #1E1E1E;}
+.receipt-body.open{display:block;}
+.convo-line{font-family:'DM Mono',monospace;font-size:12px;line-height:1.75;margin-bottom:0.5rem;color:#7A7670;}
+.convo-line strong{color:#C8C4BC;font-weight:500;}
+.convo-line:last-child{margin-bottom:0;}
+.convo-note{font-family:'DM Mono',monospace;font-size:11px;line-height:1.6;color:#4A4A4A;font-style:italic;margin-top:0.75rem;}
+
+/* margin notes */
+.art-margin{position:relative;}
+.mn{position:absolute;left:0;right:0;}
+.mn-num{font-family:'DM Mono',monospace;font-size:9.5px;color:#C8102E;margin-bottom:0.25rem;}
+.mn-text{font-family:'DM Mono',monospace;font-size:11px;line-height:1.6;color:#3A3A3A;}
+.mn-text a{color:#3A3A3A;text-decoration:underline;text-underline-offset:2px;}
+.mn.highlight .mn-text{color:#5A5A5A;}
+
+/* toc */
+.toc{border:0.5px solid #1E1E1E;padding:0.85rem 1.1rem;margin-bottom:2rem;max-width:580px;}
+.art-wrap.no-margin .toc{max-width:100%;}
+.toc-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#4A4A4A;margin-bottom:0.6rem;}
+.toc a{display:block;font-family:'DM Mono',monospace;font-size:10.5px;color:#4A4A4A;text-decoration:none;padding:0.25rem 0;border-bottom:0.5px solid #161616;transition:color 0.15s;cursor:pointer;}
+.toc a:last-child{border-bottom:none;}
+.toc a:hover{color:#C8102E;}
+.toc a.i{padding-left:0.9rem;font-size:10px;color:#2E2E2E;}
+.toc a.i:hover{color:#C8102E;}
+</style>
+</head>
+<body>
+<div class="na" id="na">
+
+  <div class="na-head">
+    <h1 class="na-name">Negation <em>Affirmation</em></h1>
+    <p class="na-tagline">Accountability &amp; line struggle on the US left</p>
+  </div>
+
+  <nav class="na-nav">
+    <a class="active" data-view="home">Home</a>
+    <a data-view="accountability">Accountability</a>
+    <a data-view="line-struggle">Line Struggle</a>
+    <a data-view="about">About</a>
+    <a data-view="submit">Submit</a>
+  </nav>
+
+  <!-- HOME -->
+  <div class="view active" id="view-home">
+    <div class="na-lead" onclick="openArticle('jitu')">
+      <div><span class="tag accountability">Accountability</span><span class="tag line-struggle" style="margin-left:5px;">Line Struggle</span></div>
+      <h2 class="na-lead-hed">FRSO Politically Lynched Me for Struggling Over the Oromo, Somali, and Other National Liberation Struggles in Ethiopia</h2>
+      <div class="na-byline">Jitu &nbsp;·&nbsp; April 15, 2026 &nbsp;·&nbsp; 97 min read</div>
+      <p class="na-excerpt">How FRSO expelled a Black woman cadre for raising the Oromo national question while protecting white male abusers — and what it reveals about commandism, cult of personality, and the communist movement's century-old erasure of Oromo nationhood.</p>
+      <div class="na-more">Read the full piece →</div>
+    </div>
+    <div class="na-stack">
+      <div class="na-item" onclick="openArticle('oromia')">
+        <div>
+          <div class="tag line-struggle">Line Struggle</div>
+          <div class="na-item-hed">Oromia &amp; Palestine: United in Struggle Against Twin Zionist Entities Ethiopia &amp; Israel</div>
+          <div class="na-item-by">Jitu &nbsp;·&nbsp; 8 min read</div>
+        </div>
+        <div class="na-arrow">→</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCOUNTABILITY -->
+  <div class="view" id="view-accountability">
+    <div class="na-lead" onclick="openArticle('jitu')">
+      <div><span class="tag accountability">Accountability</span><span class="tag line-struggle" style="margin-left:5px;">Line Struggle</span></div>
+      <h2 class="na-lead-hed">FRSO Politically Lynched Me for Struggling Over the Oromo, Somali, and Other National Liberation Struggles in Ethiopia</h2>
+      <div class="na-byline">Jitu &nbsp;·&nbsp; April 15, 2026 &nbsp;·&nbsp; 97 min read</div>
+      <p class="na-excerpt">How FRSO expelled a Black woman cadre for raising the Oromo national question while protecting white male abusers — and what it reveals about commandism, cult of personality, and the communist movement's century-old erasure of Oromo nationhood.</p>
+      <div class="na-more">Read the full piece →</div>
+    </div>
+  </div>
+
+  <!-- LINE STRUGGLE -->
+  <div class="view" id="view-line-struggle">
+    <div class="na-lead" onclick="openArticle('jitu')">
+      <div><span class="tag accountability">Accountability</span><span class="tag line-struggle" style="margin-left:5px;">Line Struggle</span></div>
+      <h2 class="na-lead-hed">FRSO Politically Lynched Me for Struggling Over the Oromo, Somali, and Other National Liberation Struggles in Ethiopia</h2>
+      <div class="na-byline">Jitu &nbsp;·&nbsp; April 15, 2026 &nbsp;·&nbsp; 97 min read</div>
+      <p class="na-excerpt">How FRSO expelled a Black woman cadre for raising the Oromo national question while protecting white male abusers.</p>
+      <div class="na-more">Read the full piece →</div>
+    </div>
+    <div class="na-stack">
+      <div class="na-item" onclick="openArticle('oromia')">
+        <div>
+          <div class="tag line-struggle">Line Struggle</div>
+          <div class="na-item-hed">Oromia &amp; Palestine: United in Struggle Against Twin Zionist Entities Ethiopia &amp; Israel</div>
+          <div class="na-item-by">Jitu &nbsp;·&nbsp; 8 min read</div>
+        </div>
+        <div class="na-arrow">→</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="view" id="view-about">
+    <h2 class="na-section-hed">About</h2>
+    <p class="na-prose"><em>Negation Affirmation</em> is an independent publication dedicated to accountability and line struggle on the US left. We proceed from the understanding that the negation of the false is simultaneously the affirmation of the true — that rigorous accountability work and theoretical development are not separate projects but one.</p>
+    <p class="na-prose">Under <strong>Accountability</strong>, we document organizational failures, cover-ups, and the structural conditions that produce them. Under <strong>Line Struggle</strong>, we develop and advance the correct political line — with particular attention to indigenous and national questions the US left has historically evaded, including the Oromo question.</p>
+    <p class="na-prose">We are independent. We accept no institutional funding that would compromise our editorial direction. Anti-Zionism is non-negotiable. Free Palestine.</p>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="view" id="view-submit">
+    <h2 class="na-section-hed">Submit</h2>
+    <p class="na-prose">We welcome submissions for both Accountability and Line Struggle. Accountability submissions must be documented — receipts, transcripts, primary sources. Line Struggle submissions should engage seriously with the political questions facing the left, with rigor and specificity.</p>
+    <p class="na-prose">Send submissions and inquiries to <span style="color:#C8102E;font-family:'DM Mono',monospace;font-size:13px;">editors@negationaffirmation.org</span></p>
+  </div>
+
+  <!-- ARTICLE: JITU -->
+  <div class="view" id="view-article-jitu">
+    <button class="art-back" onclick="closeArticle()">← Back</button>
+    <div class="art-head">
+      <div><span class="tag accountability">Accountability</span><span class="tag line-struggle" style="margin-left:5px;">Line Struggle</span></div>
+      <h1 class="art-hed">FRSO Politically Lynched Me for Struggling Over the Oromo, Somali, and Other National Liberation Struggles in Ethiopia</h1>
+      <div class="art-meta">Jitu &nbsp;·&nbsp; April 15, 2026 &nbsp;·&nbsp; Updated April 17, 2026 &nbsp;·&nbsp; 97 min read</div>
+      <p class="art-dek">How FRSO expelled a Black woman cadre for raising the Oromo national question while protecting white male abusers — and what it reveals about commandism, cult of personality, and the communist movement's century-old erasure of Oromo nationhood.</p>
+    </div>
+    <div class="toc">
+      <div class="toc-lbl">Contents</div>
+      <a>Intro</a>
+      <a class="i">Commandism Defined</a>
+      <a class="i">My Background</a>
+      <a>On Being an Oromo</a>
+      <a>Ethiopia, Zionism, and the History the Left Refuses to See</a>
+      <a class="i">Menelik's Crusades, the Battle of Adwa, and Oromo Dispossession &amp; Enslavement</a>
+      <a class="i">The 1935 Dialectic of Ethiopia/Israel &amp; Oromia/Palestine</a>
+      <a class="i">The Simultaneity of Oromo &amp; Palestinian Rebellion</a>
+      <a>The Comintern's Racialism and FRSO's Inheritance</a>
+      <a>Raising the Question</a>
+      <a>Expulsion</a>
+      <a>What the Expulsion Revealed</a>
+      <a>Final Thoughts</a>
+    </div>
+    <div class="art-wrap" id="art-wrap-jitu">
+      <div class="art-main">
+        <div class="sub-hed">Intro</div>
+        <p>In early to mid 2025, I waged a political struggle within FRSO over the Oromo national liberation struggle. That struggle has been historically erased in the communist movement through folklore built around the exaltation of Ethiopia, the Oromo's colonizer, dating back to the 19th century, which crystallized into the movement's "defense" of Ethiopia against the Italian invasion of 1935.</p>
+        <p>Within that folklore, FRSO cadre Merawi Gerima made a film drawing a throughline from Ethiopia's defeat of Italy at Adwa in 1896 to its resistance against Italian occupation from 1935 to 1941. The film erased the Oromos who were conquered in the lead-up to Adwa and the Oromos who rejected both Ethiopia and Italy in 1936 to form their own state, the Western Oromo Confederation. I concretely tied that historical "defense" of Ethiopia and subsequent erasure of the Oromo to Zionism.</p>
+        <p>Not even the discovery of being aligned with Zionism could deter FRSO. Instead, it deployed the same commandist machinery it used against the former members of FRSO Dallas in their struggle over the organization's protection of abusers. Eventually, FRSO magnified misdeeds from my personal life while distorting and fabricating others to serve as a pretext for my expulsion in July 2025.</p>
+        <p>At the exact same time that it was criminalizing and expelling me, a Black woman, for naming a burning political question with direct bearing on the world struggle, it was covering for white men who committed rape and sexual misconduct. This gulf in treatment demonstrates that FRSO does not exist to respond to reality or to uphold the right to self-determination for oppressed people, but it exists only to maintain itself and its ossified outlook in spite of reality.</p>
+        <div class="sub-hed">Commandism Defined</div>
+        <p>An organization becomes commandist when leading bodies stop responding to the ideas within the rank and file and instead begin to command them from their own narrow viewpoint. In this development, the organization no longer responds to reality but increasingly becomes concerned with confirming its own ideas and political outlook whether or not they are true. Its priority then becomes ensuring its own survival on that basis in spite of reality.</p>
+        <div class="sec-hed">On Being an Oromo</div>
+        <p>Oromos are a nation of over 40 million people in Ethiopia with a millennium-long democratic history that precedes 150 years of struggle against Ethiopian occupation. Today, Oromos make up the majority of the country's population. The Oromo condition is the highest expression of Africa's internal antagonisms that typical white race-oppressor frameworks cannot account for. To Oromos, Ethiopia was the colonizer.</p>
+        <p>Over time, I learned in growing detail how my own family for generations gave so much to the Oromo cause. My grandmother and grandfather founded the first Lutheran church in Ethiopia in the 1930s under threat of severe repression by the Orthodox Christian state. There, they taught Oromos how to write in Afaan Oromo for the first time in history at a time when even speaking the language was punishable by death.<span class="cn" id="j-ref-1" data-note="j1">[1]</span></p>
+        <p>Then there is my uncle, an Oromo national hero whose name is still uttered by Oromos to this day. He co-founded the Marxist Oromo Liberation Front in 1973 and served on its Central Committee. He was later martyred as a field general in the Oromo armed struggle against the Derg military government.</p>
+        <div class="sec-hed">Ethiopia, Zionism, and the History the Left Refuses to See</div>
+        <div class="sub-hed">Menelik's Crusades, the Battle of Adwa, and Oromo Dispossession &amp; Enslavement</div>
+        <p>At the end of the 19th century, Emperor Menelik of Abyssinia, proclaiming himself a descendant of biblical Ancient Israel, went into Oromo, Somali, Sidama, and other peoples' lands with European weapons and conquered them. A first-hand European account from 1894:<span class="cn" id="j-ref-3" data-note="j3">[3]</span></p>
+        <blockquote><p>"As the object of the campaign was to reduce the country into submission, there was, from the very beginning, 'looting of houses and crops, slaughtering of animals, sacking of the country, [and] burning.' Every day the conquerors came back to camp with slaves and booty."</p></blockquote>
+        <p>Once he had conquered most of Oromia, Menelik was advised to "make an application to be recognized as a legitimate colonial power" based on the terms of the Berlin conference of 1884–1885, specifically requiring "effective occupation."<span class="cn" id="j-ref-4" data-note="j4">[4]</span> This means Ethiopia participated in the Scramble for Africa as one of its imperialist actors.</p>
+        <p>The newly colonized were herded into slavery or forced to work for the soldier-settlers as "gebbar." One 1935 League of Nations report concludes:<span class="cn" id="j-ref-6" data-note="j6">[6]</span></p>
+        <blockquote><p>"The institution of gabbars is therefore a form of servage typical of Ethiopia, where an individual is obliged to work for another without the right to leave his service. It is a condition that closely resembles slavery."</p><p class="bq-src">League of Nations, Report of the Committee of Experts on Slavery, 1935</p></blockquote>
+        <p>National liberation, according to FRSO's own Marxist-Leninist tradition, is the struggle of a people for their right to self-determination, up to and including secession.<span class="cn" id="j-ref-8" data-note="j8">[8]</span></p>
+        <div class="sub-hed">The Simultaneity of Oromo &amp; Palestinian Rebellion</div>
+        <p>In 1936, Oromos declared the West Oromo Confederation (WOC) and lobbied the League of Nations for recognition.<span class="cn" id="j-ref-16" data-note="j16">[16]</span> As Selassie fled to Jerusalem — received with open arms by the Zionists<span class="cn" id="j-ref-19" data-note="j19">[19]</span> — Palestinians began their own revolt against Britain and the emerging Zionist entity. Orde Wingate — the Christian Zionist British captain who formed the Haganah that crushed the Arab revolt<span class="cn" id="j-ref-21" data-note="j21">[21]</span> — went to Ethiopia in 1940 to restore Selassie to the throne.<span class="cn" id="j-ref-22" data-note="j22">[22]</span> His right-hand man Avraham Akavia wrote:</p>
+        <blockquote><p>"'The Friend' gave me a 'Zionist speech' as an introduction to my work in Ethiopia. He emphasized that the war for the liberation of Ethiopia is a war for oppressed peoples like the war for the Jews…It is therefore for the sake of Zion that you work here in Ethiopia."<span class="cn" id="j-ref-23" data-note="j23">[23]</span></p></blockquote>
+        <div class="sec-hed">Raising the Question — Procedural Containment</div>
+        <p>Dod McColgan's role in Chicago was the enforcer — holding together the organization's reproduction of itself, patching up interpersonal issues, or in my case, warding off the principled struggle that could dislodge the organization from commandism. When Merawi's trailer broke, they read my texts and picked apart terminology to veer away from the central question: the Oromo people's right to self-determination.</p>
+        <div class="receipt">
+          <button class="receipt-toggle" onclick="toggleReceipt(this)"><span class="receipt-icon">▶</span><span class="receipt-label">Receipt &nbsp;·&nbsp; <strong>Conversation with Dod on terminology</strong></span></button>
+          <div class="receipt-body">
+            <div class="convo-line"><strong>Dod:</strong> I think the introduction of another term that has conflicting meanings makes the piece a little harder to grasp.</div>
+            <div class="convo-line"><strong>Jitu:</strong> ok. should i say "narrow particularism"</div>
+            <div class="convo-line"><strong>Dod:</strong> No I mean the terms above, like don't use the term particularism.</div>
+            <div class="convo-line"><strong>Dod:</strong> I think structurally it would be clearer to the reader if you were to begin and end from the place of taking a position on the national struggle.</div>
+            <div class="convo-line"><strong>Dod:</strong> Just got off the phone with Frank and encouraged him to engage with you on this.</div>
+            <div class="convo-line"><strong>Jitu:</strong> thank you</div>
+          </div>
+        </div>
+        <p>At another point, Dod invoked the cult of personality to close off inquiry entirely: "What led to [the liquidation] is a question that Frank, and Joe to a lesser extent, have spent years if not decades investigating and assessing. And which Frank was there for. Supplanting their assessment with your research would be a huge change."</p>
+        <div class="receipt">
+          <button class="receipt-toggle" onclick="toggleReceipt(this)"><span class="receipt-icon">▶</span><span class="receipt-label">Receipt &nbsp;·&nbsp; <strong>Mick Kelly cancels the meeting</strong></span></button>
+          <div class="receipt-body">
+            <div class="convo-line"><strong>Jitu:</strong> hey Mick, do you have time to talk on sunday in a more structured way?</div>
+            <div class="convo-line"><strong>Mick:</strong> Let me check and get back to you - I have plans set with my partner but she might head out of town so I would be free</div>
+            <div class="convo-line"><strong>Mick:</strong> Sorry I will be spending time with my partner today.</div>
+            <div class="convo-line"><strong>Jitu:</strong> no worries</div>
+            <div class="convo-note">The same week he blew me off, he was defending FRSO's repeated cover-ups for serial abuser Dustin Ponder.</div>
+          </div>
+        </div>
+        <div class="sec-hed">Expulsion</div>
+        <p>This excerpt from Liu Shaoqi nearly perfectly predicted what was to come for me:<span class="cn" id="j-ref-34" data-note="j34">[34]</span></p>
+        <blockquote><p>"They deliberately collect information about the shortcomings and mistakes of the target of struggle...They magnify the individual shortcomings and mistakes of this comrade and develop these into a system of opportunism...They even fabricate some story and on the basis of subjective suspicion and completely groundless rumors, accuse the comrade of various crimes."</p><p class="bq-src">Liu Shaoqi, "On Inner Party Struggle," 1952</p></blockquote>
+        <p>Six of DCOM's members had direct conflicts of interest: the complainants Frank, Joe, M, and Tulsi; Dod, the ex and housemate of Tulsi; and Omar, with whom I'd clashed throughout the political struggle. Between 60–75% of DCOM had a conflict of interest. In the end, I was politically lynched — the deciding factor being that I refused to apologize for telling Tulsi, who had subjected me to years of ambiguity, that she didn't want to be accountable.</p>
+        <div class="sec-hed">Final Thoughts — A New Line of Demarcation</div>
+        <p>The negation of the false is simultaneously the affirmation of the true. FRSO's expulsion of me over the Oromo question is not merely an organizational failure — it is a political position. Their silence on the Oromo is a line. Their protection of abusers while criminalizing line struggle is a line. The task now is to draw the demarcation clearly, so that those who would build a genuine revolutionary movement can orient themselves accordingly.</p>
+        <p>To Oromos, to Palestinians, to all nationally oppressed people: your struggle is not incidental to the world revolutionary movement. It is its most alive expression. The communist movement's century-old error must be corrected — not through will, but through ruthless self-examination and the courage to name what is true even when it topples everything resting on the lie.</p>
+      </div>
+      <div class="art-margin" id="art-margin-jitu">
+        <div class="mn" id="mn-j1" data-ref="j-ref-1"><div class="mn-num">[1]</div><div class="mn-text">Øyvind M. Eide, <em>Revolution & Religion in Ethiopia: The Growth & Persecution of the Mekane Yesus Church, 1974–85</em> (Oxford: J. Currey; Athens: Ohio University Press, 2000).</div></div>
+        <div class="mn" id="mn-j3" data-ref="j-ref-3"><div class="mn-num">[3]</div><div class="mn-text">Harold Marcus, "Motives, Methods and Some Results of the Unification of Ethiopia during the Reign of Menelik II," <em>Proceedings of the Third International Conference of Ethiopian Studies</em> (Addis Ababa, 1966), 269–280.</div></div>
+        <div class="mn" id="mn-j4" data-ref="j-ref-4"><div class="mn-num">[4]</div><div class="mn-text">Bonnie Holcomb and Sissai Ibssa, <em>The Invention of Ethiopia</em> (Trenton, NJ: Red Sea Press, 1990), 103.</div></div>
+        <div class="mn" id="mn-j6" data-ref="j-ref-6"><div class="mn-num">[6]</div><div class="mn-text">Alberto Sbacchi, <em>Ethiopia Under Mussolini: Fascism and the Colonial Experience</em> (London: Zed Books, 1985), 103.</div></div>
+        <div class="mn" id="mn-j8" data-ref="j-ref-8"><div class="mn-num">[8]</div><div class="mn-text">V. I. Lenin, "Theses on the National Question," 1913. <a href="https://www.marxists.org/archive/lenin/works/1913/jun/30.htm">marxists.org</a></div></div>
+        <div class="mn" id="mn-j16" data-ref="j-ref-16"><div class="mn-num">[16]</div><div class="mn-text">Ezekiel Gebissa, "The Italian Invasion, the Ethiopian Empire, and Oromo Nationalism: The Significance of the Western Oromo Confederation of 1936," <em>Northeast African Studies</em> 9, no. 3 (2002): 75–96.</div></div>
+        <div class="mn" id="mn-j19" data-ref="j-ref-19"><div class="mn-num">[19]</div><div class="mn-text">Haggai Erlich, <em>Alliance and Alienation: Ethiopia and Israel in the Days of Haile Selassie</em> (Trenton, NJ: Red Sea Press, 2014), 35–40.</div></div>
+        <div class="mn" id="mn-j21" data-ref="j-ref-21"><div class="mn-num">[21]</div><div class="mn-text">Ghassan Kanafani, <em>The Revolution of 1936–1939 in Palestine</em> (Beirut: PLO Research Center, 1972), 58–59.</div></div>
+        <div class="mn" id="mn-j22" data-ref="j-ref-22"><div class="mn-num">[22]</div><div class="mn-text">Simon Anglim, <em>Orde Wingate and the British Army</em> (London: Pickering & Chatto, 2010), 57–144.</div></div>
+        <div class="mn" id="mn-j23" data-ref="j-ref-23"><div class="mn-num">[23]</div><div class="mn-text">Avraham Akavia, "Orde Wingate," in <em>The Friends of Israel</em> (Tel Aviv: n.p., 1950), 94.</div></div>
+        <div class="mn" id="mn-j34" data-ref="j-ref-34"><div class="mn-num">[34]</div><div class="mn-text">Liu Shaoqi, "On Inner Party Struggle," 1952, 22. <a href="https://www.commonprogram.science/documents/on%20inner%20party%20struggle.pdf">commonprogram.science</a></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE: OROMIA & PALESTINE -->
+  <div class="view" id="view-article-oromia">
+    <button class="art-back" onclick="closeArticle()">← Back</button>
+    <div class="art-head">
+      <div><span class="tag line-struggle">Line Struggle</span></div>
+      <h1 class="art-hed">Oromia &amp; Palestine: United in Struggle Against Twin Zionist Entities Ethiopia &amp; Israel</h1>
+      <div class="art-meta">Jitu &nbsp;·&nbsp; 8 min read</div>
+      <p class="art-dek">The ideological, political, and military entwinement of Ethiopian and Israeli Zionism — and the fate of the Oromo and Palestinian peoples whose liberation struggles have always been bound together.</p>
+    </div>
+    <div class="toc">
+      <div class="toc-lbl">Contents</div>
+      <a>Chapter 1 — Ethiopian Zionism: Origins and its Establishment</a>
+      <a class="i">The Kebra Negast</a>
+      <a class="i">The Ethiopian Jews</a>
+      <a class="i">Wielding the Kebra Negast</a>
+      <a>Chapter 2 — Tewodros' Ambitions</a>
+    </div>
+    <div class="art-wrap no-margin" id="art-wrap-oromia">
+      <div class="art-main">
+        <div class="chapter-hed">Chapter 1 — Ethiopian Zionism: Origins and its Establishment</div>
+        <div class="sub-hed">The Kebra Negast</div>
+        <p>In the 14th century, the ideological foundation for modern Ethiopia was written. This text, borne in the ancient clerical language of Ge'ez, was known as the Kebra Negast, or the Glory of Kings. The text frames "Ethiopia" not simply as the highlands of Abyssinia but as a biblical and universal land of Cush, an ideological move that would later be wielded to justify its claims over the entire Horn of Africa. Thus, the Kebra Negast would be the pillar of Ethiopian Orthodox Christianity and modern imperial "Ethiopia," facilitating the fusion of church and state and serving as the basis for Abyssinia's later crusades that would lead to the formation of the Ethiopian Empire atop a prison house of nations.</p>
+        <p>The book in essence names the leaders of "Ethiopia" as the direct descendants of the biblical Ancient Israel. As the tale is told, on a delegation to Israel, Queen of Sheba of Ethiopia was wooed by King Solomon of Israel, and they had a night of passion. Back in Ethiopia, she had his child. That child would be named Menelik, and when he grew up, Menelik traveled to Jerusalem to meet his father, Solomon. Solomon recognized Menelik as his favorite child, and Menelik returned to Ethiopia with the finest, most prestigious of Israelites accompanying him. Among his congregation were Hebrew priests who smuggled with them the Ark of the Covenant — a gold chest that supposedly bore the very tablets that God himself inscribed the Ten Commandments in. That ark is supposedly held today in the Cathedral of St. Mary of Zion in Axum, located in modern Ethiopia's Tigray province in the north. Within the cathedral, priests trade off standing guard over the ark while a constant stream of poor rural people and tourists huddle outside to bask in its glow. Conveniently, nobody besides the priests is allowed to enter the church to look at the ark, but churches across Ethiopia are constructed as "models" of Solomon's temple and contain within them symbolic replicas of the ark.</p>
+        <p>Thus, Ethiopia's supposed relationship to Ancient Israel is consecrated through Menelik I, the Ark of the Covenant, its Orthodox churches made in the image of Solomon's temple with replicas of the ark, and not to mention the distinctive Hebrew traditions, practices, and language imbued within Ethiopian Orthodox Christianity itself. Placed alongside an excerpt from the Jewish text Midrash Tanchuma, it's clear how Ethiopia sought to situate itself at the center of the universe:</p>
+        <blockquote><p>"As the navel is set in the center of the human body, so is the land of Israel the navel of the world; it is situated in the center of the world, and Jerusalem in the center of the land of Israel, and the Temple in the center of Jerusalem, and the Holy of Holies in the center of the Temple, and the Ark in the center of the Holy of Holies, and the foundation stone before the Holy of Holies, because from it the world was founded."</p><p class="bq-src">Midrash Tanchuma</p></blockquote>
+        <div class="sub-hed">The Ethiopian Jews</div>
+        <p>All of this is to say nothing of the Beta Israel community, the Ethiopian Jews who reside near Gondar in Ethiopia's Amhara province in the north. The Beta Israel are both a source of legitimacy to Ethiopia's claims to descendance from Ancient Israel and a source of revulsion, given that Jews are seen by Ethiopian Orthodox Christians as the betrayers of Christ.</p>
+        <p>To the Ethiopian Zionists, the existence of Ethiopia as an Orthodox Christian nation is proof that the Jews of Ancient Israel were "restored" and perfected through Ethiopian Orthodox Christianity. So while the European Christian Zionists who played a crucial role in establishing Israel in Palestine believed the Jews must return to that Israel to eventually convert to Christianity to usher in the second coming of Christ, Ethiopian Zionism already proclaims itself the final, perfected version of Israel — Zion not in waiting but already fulfilled.</p>
+        <p>Yet, as the Beta Israel endured brutal conditions in Ethiopia, many of them looked to the Yishuv (early Jewish settlements in Palestine) and later a newly emerging Israel in occupied Palestine as their promised land and began to flock there, undermining the Ethiopian regimes' narrative of being the true Zionist entity and bolstering Israel's claims to being the land of return for the world's Jews. Eventually, when its back was to the wall owing to the national liberation struggles, Ethiopia would begrudgingly use the Beta Israel as a bargaining chip. So long as it was done in secret to not tarnish Ethiopia's reputation as descended from Solomon, Israel could receive loyal new black Jewish settlers. In the act itself, Ethiopia could launder the racial cover it receives on the world stage to Israel, and conveniently at a time when the Palestinian Liberation Organization (PLO) had made inroads into Black America. In turn, the Beta Israel would settle Palestinian lands, fill the ranks of the occupation army, as well as take up highly visible political and cultural posts. In return, Ethiopia could receive weaponry, security expertise, and economic aid to crush the rebellion of the oppressed nations within.</p>
+        <p>This symbiosis played out most notably in the 1980s when the Ethiopian military government was in existential crisis from the mounting national liberation struggles of the Eritreans, the Oromo, and the Tigray. Within this, it on multiple occasions agreed to exchange tens of thousands of Ethiopian Jews for Israeli assistance. Ironically, the brutal, racist Israeli state would come to treat the Beta Israel just as poorly as the Ethiopians did. However, given that many of the Beta Israel were unquestionably loyal to the Israeli Zionist cause, it meant that even if the majority of them faced abject conditions — from forced sterilizations, to staggering poverty, and rampant police killings — their propensity for revolt was quite low. Thus, while Ethiopia could acquire the means to extinguishing the oppressed — primarily the Oromo — in Israel, the Beta Israel were a useful dumping ground for antagonisms borne from the struggle of the oppressed — in particular the Palestinians. The two entities quite literally reinforced each other.</p>
+        <div class="sub-hed">Wielding the Kebra Negast</div>
+        <p>In the centuries following the Kebra Negast, the Abyssinian aristocracy, priests, and nuns saw themselves as the descendants of the Israelites. Kings and emperors saw themselves as Kings of Zion, and their names were nods to their descendance from Ancient Israel. For example, the most known king of the so-called Solomonic Dynasty (13th–16th century) was Yitzhak, who in the Hebrew Bible was one of the founding figures of Judaism. And centuries later, there was Menelik II, the emperor that carried out the European-backed crusades of the Oromo, Somali, Sidama, and others at the end of the 19th century. The significance of him bearing the name of Menelik was that, while wiping out the people in the south and east and mass converting the survivors from their indigenous religions and Islam to Orthodox Christianity, he was staking his claim to being the direct descendant of Menelik I, the prized child of King Solomon of Ancient Israel. Thus, before the genocide and ethnic cleansing of Palestinians by Jewish Zionism was the genocide and ethnic cleansing of the Oromo and others by Ethiopian Zionism.</p>
+
+        <div class="chapter-hed">Chapter 2 — Tewodros' Ambitions</div>
+        <p>Though Abyssinia had all the makings of Zion, the one thing it lacked was direct control over the holy city of Jerusalem, where Ancient Israel is said to have been. Situated at the opposite end of the Red Sea, Jerusalem of Palestine was under control of the Ottoman Empire. For centuries, Abyssinian monks inhabited the Dir-al-Sultan monastery there, which served as a powerful symbol of Abyssinia's historic ties to the city. However, in its weaker years, a plague wiped out the monks, and the Egyptian Coptic monks in the neighboring monasteries moved in and laid claim to the Dir-al-Sultan. Upon inheriting a weak kingdom, Emperor Tewodros, in reviving vigor around the Kebra Negast, sought to reclaim the Dir-al-Sultan, to which the Egyptians refused. This was considered a great humiliation and drove Tewodros' burning desire to take Jerusalem by force. In a letter to Queen Victoria in 1862, he wrote: "When I shall have conquered the Muslims… I will go to Jerusalem to restore the tomb of Christ to my authority."</p>
+        <p>Before Tewodros could even dream of Jerusalem, he had to get through the Muslims in the immediate vicinity — that being the Oromo, the Somali, the Afar, and others — who stood between him and his imperial fantasy. Tewodros, however, could not make it past the Oromo. In the midst of his wars against them, he petitioned Queen Victoria for military assistance. He received no response as the Crown at the time sought appeasement with the Ottomans rather than enable Tewodros in eventual direct confrontation with them. To force their hand, Tewodros imprisoned missionaries and representatives of the British government. In response, a British expedition led by General Richard Napier freed the hostages by force and imprisoned Tewodros. Shortly after, Tewodros committed suicide. His dream was to remain unrealized.</p>
+        <p>The Abyssinians saw this incident as a great betrayal by the British. Their aspirations to build the empire and inability to see it through on their own meant that, for the next century, they would continually have to look to Britain and the other powers for support on the grounds that, among other things, it was the true Zionist entity. In the meantime, subsequent emperors and rulers would have to abandon Jerusalem as an earthly concept and remain content with Jerusalem not being under its direct control. So they instead opted for a 'holy Jerusalem,' seeking to emanate soft power by shoring up its monastic presence in Jerusalem to lend credence to its claims of having holy ties to the city. Here, a succession of regimes built Solomonic churches, monasteries, and many other buildings in Jerusalem on what today is known as "Ethiopia" Street, which is a lasting imprint of their claim to being the true Zionist entity.</p>
+        <p>The fate of who held the keys to the Dir-Al-Sultan, however, remained in flux, with decades of diplomatic struggle unfolding around the question. Finally, in 1967, just as Ethiopia, with the unparallelled assistance of the Israeli counterinsurgency and American demolitions experts, suppressed the Oromo Macha-Tulama movement in the town and the Oromo-Somali Bale Revolt in the country, Israel defeated Egypt, Syria, and Jordan and captured East Jerusalem and the entire West Bank in the Six-Day War. Upon capture, it physically changed the locks of the Dir-Al-Sultan, expelled the Egyptian monks, and handed the keys to the Ethiopian Orthodox church. This cemented the modern political alliance between the Ethiopian and Israeli Zionist projects. By doing so, the two didn't just resolve a monastic dispute, but they through military conquest of Palestinian land on one hand and the defeat of a massive Oromo revolt on the other consecrated formal, begrudged unity between the Ethiopian myth of Solomonic descent and the Israeli Zionist myth of Jewish return while on the other side it fused the fate of the Oromo and Palestinian nations. Meanwhile, capturing Jerusalem brought sheer ecstasy for the Israeli Zionist project and gave it a base to further expand its territorial ambitions — while in Ethiopia, its access to the Dir Al Sultan could further cement its spiritual claims to being descended from Ancient Israel. Thus, when Israel was strengthened, it only legitimized Ethiopia more. Evidently, it was in Ethiopia and the Israelis' utmost interests to band together to crush the Oromo and Palestinians.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="na-footer">
+    <div class="na-footer-name">Negation Affirmation</div>
+    <div class="na-footer-links">
+      <a onclick="switchView('about')">About</a>
+      <a onclick="switchView('submit')">Submit</a>
+      <a href="/admin/" target="_blank">CMS</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// read time utility (238 wpm average)
+function readTime(wordCount) {
+  return Math.max(1, Math.round(wordCount / 238));
+}
+
+let prevView = 'home';
+
+function switchView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.na-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  const navEl = document.querySelector('[data-view="' + name + '"]');
+  if (navEl) navEl.classList.add('active');
+  prevView = name;
+  window.scrollTo(0, 0);
+}
+
+function openArticle(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.na-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('view-article-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'jitu') {
+    if (document.fonts) {
+      document.fonts.ready.then(() => positionMarginNotes('jitu'));
+    } else {
+      setTimeout(() => positionMarginNotes('jitu'), 400);
+    }
+  }
+}
+
+function closeArticle() { switchView(prevView); }
+
+document.querySelectorAll('.na-nav a').forEach(a => {
+  a.addEventListener('click', () => switchView(a.dataset.view));
+});
+
+function toggleReceipt(toggle) {
+  const body = toggle.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+  setTimeout(() => positionMarginNotes('jitu'), 60);
+}
+
+function positionMarginNotes(id) {
+  const wrap = document.getElementById('art-wrap-' + id);
+  const margin = document.getElementById('art-margin-' + id);
+  if (!wrap || !margin) return;
+  const wrapTop = wrap.getBoundingClientRect().top + window.scrollY;
+  const notes = margin.querySelectorAll('.mn');
+  let minTop = 0;
+  notes.forEach(note => {
+    const refEl = document.getElementById(note.dataset.ref);
+    const refTop = refEl
+      ? refEl.getBoundingClientRect().top + window.scrollY - wrapTop
+      : minTop;
+    const actualTop = Math.max(refTop, minTop);
+    note.style.top = actualTop + 'px';
+    minTop = actualTop + note.offsetHeight + 14;
+  });
+  const lastNote = margin.querySelector('.mn:last-child');
+  if (lastNote) {
+    margin.style.height = (parseFloat(lastNote.style.top) + lastNote.offsetHeight + 20) + 'px';
+  }
+}
+
+// citation hover
+document.querySelectorAll('.cn').forEach(cn => {
+  const note = document.getElementById('mn-' + cn.dataset.note);
+  cn.addEventListener('mouseenter', () => { cn.classList.add('active'); if (note) note.classList.add('highlight'); });
+  cn.addEventListener('mouseleave', () => { cn.classList.remove('active'); if (note) note.classList.remove('highlight'); });
+});
+
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.view.active[id^="view-article-"]');
+  if (active) positionMarginNotes(active.id.replace('view-article-', ''));
+});
+</script>
+</body>
+</html>
